@@ -116,6 +116,7 @@ int main(void)
 	unsigned char* temp = (unsigned char*)malloc(kk*sizeof(unsigned char));
 	while (num--)
 	{
+		cout<<"Please Input "<<k<<"mer String:"<<endl;
 		for (int i = 0; i < k; i++)
 			cin >> temp[i];
 		gettimeofday(&t1,nullptr);
