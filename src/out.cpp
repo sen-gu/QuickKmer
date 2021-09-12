@@ -1,6 +1,8 @@
 #include "head.h"
-#include <windows.h>
-#pragma comment(lib, "winmm.lib ")
+#include "sys/time.h"
+#define fprintf_s fprintf
+// #include <windows.h>
+// #pragma comment(lib, "winmm.lib ")
 using namespace std;
 void OutPut(unsigned int address)
 {
@@ -81,16 +83,20 @@ void check_and_OutPut(unsigned char* char_from_user, unsigned int length_of_char
 	OutPut(DNA_id, kmer_id);
 	return;
 }
+int operator-(const timeval &t2, const timeval &t1)
+{
+	return ((t2.tv_sec-t1.tv_sec)*1000000+(t2.tv_usec-t1.tv_usec))/1000;
+}
 int main(void)
 {
-	DWORD t1, t2;
-	t1 = timeGetTime();
+	timeval t1, t2;
+	gettimeofday(&t1,nullptr);
 	CompressEntry();
-	t2 = timeGetTime();
+	gettimeofday(&t2,nullptr);
 	cout << "数据重新编码完毕，耗时" << (int)(t2 - t1) << "毫秒" << endl;
-	t1 = timeGetTime();
+	gettimeofday(&t1,nullptr);
 	build_index();
-	t2 = timeGetTime();
+	gettimeofday(&t2,nullptr);
 	cout << "k="<<k<<"索引建立完毕，耗时" << (int)(t2 - t1) << "毫秒" << endl;
 	fileout = fopen("res.csv", "a");
 	cout << "索引建立完毕，请选择结果输出模式（输入数字并回车）" << endl;
@@ -101,7 +107,7 @@ int main(void)
 	if ((mode > 3) || (mode < 0))
 	{
 		cout << "TYPE ERROR! RUN THIS PROGRAMMA AGAIN PLEASE." << endl;
-		system("pause");
+		cin.get();/*Replace pause()*/
 		exit(0);
 	}
 	unsigned int num;
@@ -112,12 +118,12 @@ int main(void)
 	{
 		for (int i = 0; i < k; i++)
 			cin >> temp[i];
-		t1 = timeGetTime();
+		gettimeofday(&t1,nullptr);
 
 		search_index(temp);
-		t2 = timeGetTime();
+		gettimeofday(&t2,nullptr);
 		cout << "查询并输出查询结果完毕，耗时" << (int)(t2 - t1) << "毫秒" << endl;
 	}
-	system("pause");
+	cin.get();/*Replace pause()*/
 	return 0;
 }

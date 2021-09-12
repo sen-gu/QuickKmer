@@ -29,7 +29,7 @@ int Compress(int num)
 	}
 	if (filein == NULL)
 	{
-		system("pause");
+		cin.get();/*Replace pause()*/
 		return -1;
 	}
 	fileout = fopen(file_yssj, "ab");
